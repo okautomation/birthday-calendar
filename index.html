@@ -21,9 +21,11 @@
         const tg = window.Telegram.WebApp;
         tg.expand(); // Разворачиваем приложение на весь экран
 
-        // Получаем user_id из параметров URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('user_id');
+        const userId = tg?.initDataUnsafe?.user?.id;
+
+if (!userId) {
+  alert("Открой приложение внутри Telegram.");
+}
         const webhookUrl = 'https://hook.us1.make.com/8271792462:AAG-qEvcFPSImdjvgkW3iDW9eLZ5ZDcROjs';
 
         const submitBtn = document.getElementById('submitBtn');
