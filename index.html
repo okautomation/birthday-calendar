@@ -7,7 +7,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: var(--tg-theme-bg-color, #ffffff); color: var(--tg-theme-text-color, #000000); }
-        input, button { padding: 12px; margin: 10px; width: 80%; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+        input, button { padding: 12px; margin: 10px; width: 80%; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
         button { background-color: var(--tg-theme-button-color, #2481cc); color: var(--tg-theme-button-text-color, #ffffff); border: none; cursor: pointer; font-weight: bold; }
         button:disabled { opacity: 0.5; }
     </style>
@@ -19,15 +19,12 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Разворачиваем приложение на весь экран
+        tg.expand();
 
-        const userId = tg?.initDataUnsafe?.user?.id;
-
-if (!userId) {
-  alert("Открой приложение внутри Telegram.");
-    return;
-}
-        const webhookUrl = 'https://hook.eu1.make.com/xw1aqtrt9csn5tz8cqvberuek8baf8v9';
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('user_id');
+        // Ваш новый URL Make
+        const webhookUrl = 'https://hook.us1.make.com/8665573532:AAHpsToW-q-ziIROqup0L3a-jcrwW8ekbIg';
 
         const submitBtn = document.getElementById('submitBtn');
         const birthdayInput = document.getElementById('birthday');
@@ -54,16 +51,14 @@ if (!userId) {
                 });
 
                 if (response.ok) {
-                    // Закрываем WebApp после успешной отправки
                     tg.close();
                 } else {
-                    alert('Ошибка при отправке данных');
+                    alert('Ошибка сервера Make. Проверьте сценарий.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = 'Подтвердить';
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('Сетевая ошибка');
+                alert('Ошибка сети или CORS');
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Подтвердить';
             }
