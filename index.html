@@ -5,426 +5,90 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Дата рождения</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d0d0f;
-    --surface: #16161a;
-    --border: #2a2a32;
-    --accent: #c9a96e;
-    --accent2: #e8c99a;
-    --text: #f0ede8;
-    --muted: #6b6878;
-    --success: #4caf82;
-  }
-
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-background: var(–bg);
-min-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-font-family: ‘DM Sans’, sans-serif;
-color: var(–text);
-padding: 20px;
-background-image:
-radial-gradient(ellipse 60% 50% at 20% 20%, rgba(201,169,110,0.06) 0%, transparent 60%),
-radial-gradient(ellipse 40% 60% at 80% 80%, rgba(201,169,110,0.04) 0%, transparent 60%);
-}
-
-.card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 20px;
-padding: 44px 40px;
-width: 100%;
-max-width: 420px;
-position: relative;
-overflow: hidden;
-animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 1px;
-background: linear-gradient(90deg, transparent, var(–accent), transparent);
-opacity: 0.6;
-}
-
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(24px); }
-to   { opacity: 1; transform: translateY(0); }
-}
-
-.icon {
-width: 52px; height: 52px;
-background: linear-gradient(135deg, rgba(201,169,110,0.15), rgba(201,169,110,0.05));
-border: 1px solid rgba(201,169,110,0.25);
-border-radius: 14px;
-display: flex; align-items: center; justify-content: center;
-font-size: 22px;
-margin-bottom: 24px;
-}
-
-h1 {
-font-family: ‘Cormorant Garamond’, serif;
-font-size: 28px;
-font-weight: 300;
-letter-spacing: 0.02em;
-margin-bottom: 6px;
-line-height: 1.2;
-}
-
-.subtitle {
-color: var(–muted);
-font-size: 13.5px;
-font-weight: 300;
-margin-bottom: 36px;
-line-height: 1.5;
-}
-
-.field {
-margin-bottom: 20px;
-}
-
-label {
-display: block;
-font-size: 11px;
-font-weight: 500;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: var(–muted);
-margin-bottom: 8px;
-}
-
-/* Три селектора — день, месяц, год */
-.date-selectors {
-display: grid;
-grid-template-columns: 80px 1fr 100px;
-gap: 10px;
-}
-
-select, input {
-width: 100%;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(–border);
-border-radius: 10px;
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
-padding: 13px 14px;
-outline: none;
-transition: border-color 0.2s, background 0.2s;
-cursor: pointer;
-appearance: none;
--webkit-appearance: none;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘7’ viewBox=‘0 0 12 7’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%236b6878’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’ stroke-linejoin=‘round’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 12px center;
-padding-right: 32px;
-}
-
-select:hover, select:focus {
-border-color: rgba(201,169,110,0.4);
-background-color: rgba(255,255,255,0.06);
-}
-
-select option {
-background: #1e1e24;
-color: var(–text);
-}
-
-.name-field input {
-background: rgba(255,255,255,0.04);
-border: 1px solid var(–border);
-border-radius: 10px;
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
-padding: 13px 14px;
-outline: none;
-transition: border-color 0.2s;
-background-image: none;
-padding-right: 14px;
-}
-
-.name-field input:focus {
-border-color: rgba(201,169,110,0.4);
-}
-
-.name-field input::placeholder {
-color: var(–muted);
-}
-
-.divider {
-height: 1px;
-background: var(–border);
-margin: 28px 0;
-}
-
-.btn {
-width: 100%;
-padding: 15px;
-background: linear-gradient(135deg, var(–accent), #b8904a);
-border: none;
-border-radius: 12px;
-color: #1a1206;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14.5px;
-font-weight: 500;
-letter-spacing: 0.04em;
-cursor: pointer;
-transition: opacity 0.2s, transform 0.15s;
-position: relative;
-overflow: hidden;
-}
-
-.btn:hover { opacity: 0.
- 92; transform: translateY(-1px); }
-.btn:active { transform: translateY(0); opacity: 1; }
-
-.btn:disabled {
-opacity: 0.45;
-cursor: not-allowed;
-transform: none;
-}
-
-.btn .btn-text { position: relative; z-index: 1; }
-
-.btn-loader {
-display: none;
-width: 18px; height: 18px;
-border: 2px solid rgba(26,18,6,0.3);
-border-top-color: #1a1206;
-border-radius: 50%;
-animation: spin 0.7s linear infinite;
-margin: 0 auto;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Success state */
-.success-screen {
-display: none;
-text-align: center;
-animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.success-icon {
-width: 64px; height: 64px;
-background: linear-gradient(135deg, rgba(76,175,130,0.2), rgba(76,175,130,0.05));
-border: 1px solid rgba(76,175,130,0.3);
-border-radius: 50%;
-display: flex; align-items: center; justify-content: center;
-font-size: 26px;
-margin: 0 auto 20px;
-}
-
-.success-title {
-font-family: ‘Cormorant Garamond’, serif;
-font-size: 26px;
-font-weight: 300;
-margin-bottom: 8px;
-}
-
-.success-text {
-color: var(–muted);
-font-size: 13.5px;
-line-height: 1.6;
-}
-
-.success-date {
-margin-top: 20px;
-padding: 14px 20px;
-background: rgba(201,169,110,0.07);
-border: 1px solid rgba(201,169,110,0.2);
-border-radius: 10px;
-font-size: 15px;
-color: var(–accent2);
-font-family: ‘Cormorant Garamond’, serif;
-font-size: 18px;
-letter-spacing: 0.03em;
-}
-
-.error-msg {
-display: none;
-color: #e07070;
-font-size: 12.5px;
-margin-top: 12px;
-text-align: center;
-}
-
-/* Telegram hint */
-.tg-hint {
-margin-top: 18px;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 6px;
-font-size: 12px;
-color: var(–muted);
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;color:#f0ede8;padding:20px}
+.card{background:#16213e;border:1px solid #0f3460;border-radius:20px;padding:40px 36px;width:100%;max-width:420px}
+.icon{font-size:40px;margin-bottom:20px}
+h1{font-size:26px;font-weight:400;margin-bottom:8px}
+.sub{color:#8892b0;font-size:14px;margin-bottom:32px;line-height:1.5}
+label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8892b0;margin-bottom:8px}
+.field{margin-bottom:20px}
+input[type=text],input[type=date]{width:100%;background:#0d1b2a;border:1.5px solid #0f3460;border-radius:10px;color:#f0ede8;font-size:16px;padding:14px 16px;outline:none;transition:border-color .2s}
+input[type=date]{color-scheme:dark}
+input[type=text]:focus,input[type=date]:focus{border-color:#e94560}
+input[type=text]::placeholder{color:#4a5568}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,#e94560,#c23152);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .15s}
+.btn:hover{opacity:.9;transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.err{color:#e94560;font-size:13px;margin-top:12px;display:none;text-align:center}
+.ok{display:none;text-align:center;padding:10px 0}
+.ok-icon{font-size:50px;margin-bottom:16px}
+.ok h2{font-size:24px;font-weight:400;margin-bottom:8px}
+.ok p{color:#8892b0;font-size:14px;line-height:1.6}
+.ok-date{margin-top:20px;padding:14px;background:#e9456015;border:1px solid #e9456040;border-radius:10px;color:#e94560;font-size:17px}
+.spin{display:none;width:20px;height:20px;border:2px solid #fff4;border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;margin:0 auto}
+@keyframes s{to{transform:rotate(360deg)}}
+.divider{height:1px;background:#0f3460;margin:24px 0}
 </style>
-
 </head>
 <body>
-
-<div class="card" id="mainCard">
-  <div class="icon">🎂</div>
-  <h1>Дата рождения</h1>
-  <p class="subtitle">Укажите вашу дату рождения — мы сохраним её для персональных поздравлений</p>
-
-  <div class="field name-field">
-    <label>Ваше имя</label>
-    <input type="text" id="nameInput" placeholder="Введите имя" autocomplete="off" />
-  </div>
-
-  <div class="field">
-    <label>Дата рождения</label>
-    <div class="date-selectors">
-      <select id="daySelect">
-        <option value="">День</option>
-      </select>
-      <select id="monthSelect">
-        <option value="">Месяц</option>
-        <option value="01">Январь</option>
-        <option value="02">Февраль</option>
-        <option value="03">Март</option>
-        <option value="04">Апрель</option>
-        <option value="05">Май</option>
-        <option value="06">Июнь</option>
-        <option value="07">Июль</option>
-        <option value="08">Август</option>
-        <option value="09">Сентябрь</option>
-        <option value="10">Октябрь</option>
-        <option value="11">Ноябрь</option>
-        <option value="12">Декабрь</option>
-      </select>
-      <select id="yearSelect">
-        <option value="">Год</option>
-      </select>
+<div class="card">
+  <div id="form">
+    <div class="icon">🎂</div>
+    <h1>Дата рождения</h1>
+    <p class="sub">Укажите вашу дату рождения — получите поздравление в Telegram</p>
+    <div class="field">
+      <label>Ваше имя</label>
+      <input type="text" id="nm" placeholder="Введите имя">
     </div>
+    <div class="field">
+      <label>Дата рождения</label>
+      <input type="date" id="dt" max="2010-12-31" min="1930-01-01">
+    </div>
+    <div class="divider"></div>
+    <button class="btn" id="btn" onclick="send()">
+      <span id="bt">Сохранить дату →</span>
+      <div class="spin" id="sp"></div>
+    </button>
+    <div class="err" id="err">⚠ Заполните все поля</div>
   </div>
-
-  <div class="divider"></div>
-
-  <button class="btn" id="submitBtn" onclick="submitForm()">
-    <span class="btn-text" id="btnText">Сохранить дату</span>
-    <div class="btn-loader" id="btnLoader"></div>
-  </button>
-
-  <div class="error-msg" id="errorMsg">⚠ Пожалуйста, заполните все поля</div>
-
-  <div class="tg-hint">
-    <span>🔒</span>
-    <span>Данные сохраняются безопасно</span>
+  <div class="ok" id="ok">
+    <div class="ok-icon">🎉</div>
+    <h2>Готово!</h2>
+    <p>Дата рождения сохранена.<br>Вы получите поздравление в Telegram!</p>
+    <div class="ok-date" id="od"></div>
   </div>
 </div>
-
-<!-- Success -->
-
-<div class="card success-screen" id="successCard">
-  <div class="success-icon">✓</div>
-  <div class="success-title">Готово!</div>
-  <p class="success-text">Дата рождения сохранена.<br>Вы получите поздравление в Telegram.</p>
-  <div class="success-date" id="successDate"></div>
-</div>
-
 <script>
-  // Заполняем дни
-  const daySelect = document.getElementById('daySelect');
-  for (let d = 1; d <= 31; d++) {
-    const opt = document.createElement('option');
-    opt.value = String(d).padStart(2, '0');
-    opt.textContent = d;
-    daySelect.appendChild(opt);
+function getChatId(){var p=new URLSearchParams(window.location.search);return p.get('chat_id')||p.get('user_id')||'';}
+async function send(){
+  var n=document.getElementById('nm').value.trim();
+  var dt=document.getElementById('dt').value;
+  var e=document.getElementById('err');
+  if(!n||!dt){e.style.display='block';e.textContent='⚠ Заполните все поля';return;}
+  e.style.display='none';
+  var parts=dt.split('-');
+  var year=parts[0],month=parts[1],day=parts[2];
+  var birthday=day+'.'+month+'.'+year;
+  var mn={'01':'января','02':'февраля','03':'марта','04':'апреля','05':'мая','06':'июня','07':'июля','08':'августа','09':'сентября','10':'октября','11':'ноября','12':'декабря'};
+  var btn=document.getElementById('btn'),bt=document.getElementById('bt'),sp=document.getElementById('sp');
+  btn.disabled=true;bt.style.display='none';sp.style.display='block';
+  try{
+    await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.
+
+   stringify({name:n,birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
+    });
+    document.getElementById('form').style.display='none';
+    document.getElementById('ok').style.display='block';
+    document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year+' — '+n;
+  }catch(err){
+    btn.disabled=false;bt.style.display='block';sp.style.display='none';
+    e.textContent='⚠ Ошибка. Попробуйте ещё раз.';e.style.display='block';
   }
-
-  // Заполняем годы
-  const yearSelect = document.getElementById('yearSelect');
-  const currentYear = new Date().getFullYear();
-  for (let y = currentYear; y >= 1930; y--) {
-    const opt = document.createElement('option');
-    opt.
-  value = y;
-    opt.textContent = y;
-    yearSelect.appendChild(opt);
-  }
-
-  // Получаем chat_id из URL параметра
-  function getChatId() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('chat_id')  params.get('user_id')  '';
-  }
-
-  async function submitForm() {
-    const name = document.getElementById('nameInput').value.trim();
-    const day = document.getElementById('daySelect').value;
-    const month = document.getElementById('monthSelect').value;
-    const year = document.getElementById('yearSelect').value;
-    const errorMsg = document.getElementById('errorMsg');
-
-    // Валидация
-    if (!name  !day  !month || !year) {
-      errorMsg.style.display = 'block';
-      return;
-    }
-    errorMsg.style.display = 'none';
-
-    const btn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    const btnLoader = document.getElementById('btnLoader');
-
-    btn.disabled = true;
-    btnText.style.display = 'none';
-    btnLoader.style.display = 'block';
-
-    const birthday = ${day}.${month}.${year};
-    const chat_id = getChatId();
-
-    const monthNames = {
-      '01':'января','02':'февраля','03':'марта','04':'апреля',
-      '05':'мая','06':'июня','07':'июля','08':'августа',
-      '09':'сентября','10':'октября','11':'ноября','12':'декабря'
-    };
-
-    try {
-      const response = await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name,
-          birthday: birthday,
-          day: day,
-          month: month,
-          year: year,
-          chat_id: chat_id,
-          timestamp: new Date().toISOString()
-        })
-      });
-
-      if (response.ok || response.status === 200) {
-        document.getElementById('mainCard').style.display = 'none';
-        const sc = document.getElementById('successCard');
-        sc.style.display = 'block';
-        document.getElementById('successDate').textContent =
-          ${parseInt(day)} ${monthNames[month]} ${year} — ${name};
-      } else {
-        throw new Error('Server error');
-      }
-    } catch (err) {
-      btn.disabled = false;
-      btnText.style.display = 'block';
-      btnLoader.style.display = 'none';
-      errorMsg.textContent = '⚠ Ошибка отправки. Попробуйте ещё раз.';
-      errorMsg.style.display = 'block';
-    }
-  }
+}
 </script>
-
 </body>
-</html>      
+</html>   
