@@ -63,7 +63,10 @@ input[type=text]::placeholder{color:#4a5568}
   </div>
 </div>
 <script>
-function getChatId(){var p=new URLSearchParams(window.location.search);return p.get('chat_id')||p.get('user_id')||'';}
+function getChatId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("user_id");
+}
 async function send(){
   var n=document.getElementById('nm').value.trim();
   var dt=document.getElementById('dt').value;
