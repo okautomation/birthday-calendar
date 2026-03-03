@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html lang="ru">
+<html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Дата рождения</title>
+<title>Дата народження</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#1a1a2e;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;color:#f0ede8;padding:20px}
@@ -30,33 +30,35 @@ input[type=text]::placeholder{color:#4a5568}
 .spin{display:none;width:20px;height:20px;border:2px solid #fff4;border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;margin:0 auto}
 @keyframes s{to{transform:rotate(360deg)}}
 .divider{height:1px;background:#0f3460;margin:24px 0}
+.hint{margin-top:16px;text-align:center;color:#4a5568;font-size:12px}
 </style>
 </head>
 <body>
 <div class="card">
   <div id="form">
     <div class="icon">🎂</div>
-    <h1>Дата рождения</h1>
-    <p class="sub">Укажите вашу дату рождения — получите поздравление в Telegram</p>
+    <h1>Дата народження</h1>
+    <p class="sub">Вкажіть вашу дату народження — отримаєте привітання в Telegram</p>
     <div class="field">
-      <label>Ваше имя</label>
-      <input type="text" id="nm" placeholder="Введите имя">
+      <label>Ваше імʼя</label>
+      <input type="text" id="nm" placeholder="Введіть імʼя">
     </div>
     <div class="field">
-      <label>Дата рождения</label>
+      <label>Дата народження</label>
       <input type="date" id="dt" max="2010-12-31" min="1930-01-01">
     </div>
     <div class="divider"></div>
     <button class="btn" id="btn" onclick="send()">
-      <span id="bt">Сохранить дату →</span>
+      <span id="bt">Зберегти дату →</span>
       <div class="spin" id="sp"></div>
     </button>
-    <div class="err" id="err">⚠ Заполните все поля</div>
+    <div class="err" id="err">⚠ Заповніть усі поля</div>
+    <div class="hint">🔒 Дані зберігаються безпечно</div>
   </div>
   <div class="ok" id="ok">
     <div class="ok-icon">🎉</div>
     <h2>Готово!</h2>
-    <p>Дата рождения сохранена.<br>Вы получите поздравление в Telegram!</p>
+    <p>Дату народження збережено.<br>Ви отримаєте привітання в Telegram!</p>
     <div class="ok-date" id="od"></div>
   </div>
 </div>
@@ -66,29 +68,26 @@ async function send(){
   var n=document.getElementById('nm').value.trim();
   var dt=document.getElementById('dt').value;
   var e=document.getElementById('err');
-  if(!n||!dt){e.style.display='block';e.textContent='⚠ Заполните все поля';return;}
+  if(!n||!dt){e.style.display='block';e.textContent='⚠ Заповніть усі поля';return;}
   e.style.display='none';
   var parts=dt.split('-');
   var year=parts[0],month=parts[1],day=parts[2];
   var birthday=day+'.'+month+'.'+year;
-  var mn={'01':'января','02':'февраля','03':'марта','04':'апреля','05':'мая','06':'июня','07':'июля','08':'августа','09':'сентября','10':'октября','11':'ноября','12':'декабря'};
+  var mn={'01':'січня','02':'лютого','03':'березня','04':'квітня','05':'травня','06':'червня','07':'липня','08':'серпня','09':'вересня','10':'жовтня','11':'листопада','12':'грудня'};
   var btn=document.getElementById('btn'),bt=document.getElementById('bt'),sp=document.getElementById('sp');
   btn.disabled=true;bt.style.display='none';sp.style.display='block';
-  try{
-    await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
+  try{await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.
-
-   stringify({name:n,birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
+      body:JSON.stringify({name:n,birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
     });
     document.getElementById('form').style.display='none';
     document.getElementById('ok').style.display='block';
     document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year+' — '+n;
   }catch(err){
     btn.disabled=false;bt.style.display='block';sp.style.display='none';
-    e.textContent='⚠ Ошибка. Попробуйте ещё раз.';e.style.display='block';
+    e.textContent='⚠ Помилка. Спробуйте ще раз.';e.style.display='block';
   }
 }
 </script>
 </body>
-</html>   
+</html>
