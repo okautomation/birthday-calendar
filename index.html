@@ -76,12 +76,17 @@ async function send(){
   var mn={'01':'січня','02':'лютого','03':'березня','04':'квітня','05':'травня','06':'червня','07':'липня','08':'серпня','09':'вересня','10':'жовтня','11':'листопада','12':'грудня'};
   var btn=document.getElementById('btn'),bt=document.getElementById('bt'),sp=document.getElementById('sp');
   btn.disabled=true;bt.style.display='none';sp.style.display='block';
-  try{await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name:n,birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
-    });
-    document.getElementById('form').style.display='none';
-    document.getElementById('ok').style.display='block';
+  try{ await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:n,birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
+  });
+  document.getElementById('form').style.display='none';
+  document.getElementById('ok').style.display='block';
+  document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year+' — '+n;
+  if(window.Telegram && window.Telegram.WebApp) {
+    setTimeout(function(){ window.Telegram.WebApp.close(); }, 2000);
+  }
+}catch(err){
     document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year+' — '+n;
   }catch(err){
     btn.disabled=false;bt.style.display='block';sp.style.display='none';
