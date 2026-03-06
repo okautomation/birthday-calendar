@@ -220,30 +220,56 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
 </div>
 <script>
 var mn={'01':'січня','02':'лютого','03':'березня','04':'квітня','05':'травня','06':'червня','07':'липня','08':'серпня','09':'вересня','10':'жовтня','11':'листопада','12':'грудня'};
-function getChatId(){var p=new URLSearchParams(window.location.search);return p.get('chat_id')p.get('user_id')'';}
-async function send(){
+
+function getChatId(){
+  var p=new URLSearchParams(window.location.search);
+  return p.get('chat_id')p.get('user_id')'';
+}
+
+function send(){
   var day=document.getElementById('sel-day').value;
   var month=document.getElementById('sel-month').value;
   var year=document.getElementById('sel-year').value;
   var e=document.getElementById('err');
-  if(!day!month!year){e.style.display='block';e.textContent='⚠️ Оберіть день, місяць і рік';return;}
+  if(!day!month!year){
+    e.style.display='block';
+    e.textContent='⚠️ Оберіть день, місяць і рік';
+    return;
+  }
   e.style.display='none';
   var birthday=day+'.'+month+'.'+year;
-  var btn=document.getElementById('btn'),bt=document.getElementById('bt'),sp=document.getElementById('sp');
-  btn.disabled=true;bt.style.display='none';sp.style.display='block';
-  try{
-    await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
-    });
+  var btn=document.getElementById('btn');
+  var bt=document.getElementById('bt');
+  var sp=document.getElementById('sp');
+  btn.disabled=true;
+  bt.style.display='none';
+  sp.style.display='block';
+
+  fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      birthday:birthday,
+      day:day,
+      month:month,
+      year:year,
+      chat_id:getChatId(),
+      timestamp:new Date().toISOString()
+    })
+  }).then(function(){
     document.getElementById('form').style.display='none';
     document.getElementById('ok').style.display='block';
     document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year;
-    if(window.Telegram&&window.Telegram.WebApp){setTimeout(function(){window.Telegram.WebApp.close();},2000);}
-  }catch(err){
-    btn.disabled=false;bt.style.display='block';sp.style.display='none';
-    e.textContent='⚠️ Помилка. Спробуйте ще раз.';e.style.display='block';
-  }
+    if(window.Telegram&&window.Telegram.WebApp){
+      setTimeout(function(){window.Telegram.WebApp.close();},2000);
+    }
+  }).catch(function(){
+    btn.disabled=false;
+    bt.style.display='block';
+    sp.style.display='none';
+    e.textContent='⚠️ Помилка. Спробуйте ще раз.';
+    e.style.display='block';
+  });
 }
 </script>
 </body>
