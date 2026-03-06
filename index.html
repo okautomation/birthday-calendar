@@ -15,20 +15,10 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
 .field{margin-bottom:20px}
 .date-row{display:flex;gap:10px}
 .date-col{flex:1;display:flex;flex-direction:column;align-items:center}
-.date-col select{
-  width:100%;
-  background:#0d1b2a;
-  border:1.5px solid #0f3460;
-  border-radius:10px;
-  color:#f0ede8;
-  font-size:15px;
-  padding:12px 4px;
-  outline:none;
-  cursor:pointer;
-}
+.date-col select{width:100%;background:#0d1b2a;border:1.5px solid #0f3460;border-radius:10px;color:#f0ede8;font-size:15px;padding:12px 4px;outline:none;cursor:pointer}
 .date-col select:focus{border-color:#e94560}
 .date-col-label{font-size:11px;color:#4a5568;margin-top:5px}
-.btn{width:100%;padding:15px;background:linear-gradient(135deg,#e94560,#c23152);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,#e94560,#c23152);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .err{color:#e94560;font-size:13px;margin-top:12px;display:none;text-align:center}
 .ok{display:none;text-align:center;padding:10px 0}
@@ -53,7 +43,39 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
       <div class="date-row">
         <div class="date-col">
           <select id="sel-day">
-            <option value="">—</option>
+<option value="">—</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+
           </select>
           <span class="date-col-label">день</span>
         </div>
@@ -63,7 +85,7 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
             <option value="01">Січень</option>
             <option value="02">Лютий</option>
             <option value="03">Березень</option>
-            <option value="04">Квітень</option>
+ <option value="04">Квітень</option>
             <option value="05">Травень</option>
             <option value="06">Червень</option>
             <option value="07">Липень</option>
@@ -87,7 +109,7 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
     <button class="btn" id="btn" onclick="send()">
       <span id="bt">Зберегти дату →</span>
       <div class="spin" id="sp"></div>
-   </button>
+    </button>
     <div class="err" id="err"></div>
     <div class="hint">🔒 Дані зберігаються безпечно</div>
   </div>
@@ -99,71 +121,46 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
   </div>
 </div>
 <script>
+// Роки: від поточного року до 100 років назад — автоматично назавжди
+var curYear = new Date().getFullYear();
+var selYear = document.getElementById('sel-year');
+for(var y = curYear; y >= curYear - 100; y--){
+  var o = document.createElement('option');
+  o.value = String(y);
+  o.textContent = y;
+  selYear.appendChild(o);
+}
+
 var mn={'01':'січня','02':'лютого','03':'березня','04':'квітня','05':'травня','06':'червня','07':'липня','08':'серпня','09':'вересня','10':'жовтня','11':'листопада','12':'грудня'};
-
-// Fill days
-var selDay=document.getElementById('sel-day');
-for(var d=1;d<=31;d++){
-  var o=document.createElement('option');
-  o.value=String(d).padStart(2,'0');
-  o.textContent=d;
-  selDay.appendChild(o);
-}
-
-// Fill years
-var selYear=document.getElementById('sel-year');
-var curYear=new Date().getFullYear();
-for(var y=curYear-5;y>=1930;y--){
-  var oy=document.createElement('option');
-  oy.value=String(y);
-  oy.textContent=y;
-  selYear.appendChild(oy);
-}
 
 function getChatId(){
   var p=new URLSearchParams(window.location.search);
   return p.get('chat_id')p.get('user_id')'';
 }
-
 async function send(){
   var day=document.getElementById('sel-day').value;
   var month=document.getElementById('sel-month').value;
   var year=document.getElementById('sel-year').value;
   var e=document.getElementById('err');
-  if(!day!month!year){
-    e.style.display='block';
-    e.textContent='⚠️ Оберіть день, місяць і рік';
-    return;
-  }
+  if(!day!month!year){e.style.display='block';e.textContent='⚠️ Оберіть день, місяць і рік';return;}
   e.style.display='none';
   var birthday=day+'.'+month+'.'+year;
   var btn=document.getElementById('btn'),bt=document.getElementById('bt'),sp=document.getElementById('sp');
   btn.disabled=true;bt.style.display='none';sp.style.display='block';
   try{
     await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        birthday:birthday,
-        day:day,
-        month:month,
-        year:year,
-        chat_id:getChatId(),
-        timestamp:new Date().toISOString()
-      })
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
     });
     document.getElementById('form').style.display='none';
     document.getElementById('ok').style.display='block';
     document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year;
-    if(window.Telegram&&window.Telegram.WebApp){
-      setTimeout(function(){window.Telegram.WebApp.close();},2000);
-    }
+    if(window.Telegram&&window.Telegram.WebApp){setTimeout(function(){window.Telegram.WebApp.close();},2000);}
   }catch(err){
     btn.disabled=false;bt.style.display='block';sp.style.display='none';
-    e.textContent='⚠️ Помилка. Спробуйте ще раз.';
-    e.style.display='block';
+    e.textContent='⚠️ Помилка. Спробуйте ще раз.';e.style.display='block';
   }
 }
 </script>
 </body>
-</html>   
+</html>
