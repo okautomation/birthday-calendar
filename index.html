@@ -64,7 +64,8 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
             <option value="07">Липень</option><option value="08">Серпень</option>
             <option value="09">Вересень</option><option value="10">Жовтень</option>
             <option value="11">Листопад</option><option value="12">Грудень</option>
-      <span class="date-col-label">місяць</span>
+          </select>
+          <span class="date-col-label">місяць</span>
         </div>
         <div class="date-col">
           <select id="sel-year">
@@ -122,7 +123,7 @@ var mn={'01':'січня','02':'лютого','03':'березня','04':'кві
 
 function getChatId(){
   var p=new URLSearchParams(window.location.search);
-  return p.get('chat_id')||p.get('user_id')||'';
+  return p.get('chat_id')  p.get('user_id')  '';
 }
 
 function send(){
@@ -130,7 +131,7 @@ function send(){
   var month=document.getElementById('sel-month').value;
   var year=document.getElementById('sel-year').value;
   var e=document.getElementById('err');
-  if(!day||!month||!year){
+  if(!day!month!year){
     e.style.display='block';
     e.textContent='⚠️ Оберіть день, місяць і рік';
     return;
@@ -161,4 +162,3 @@ function send(){
 </script>
 </body>
 </html>
-          </select>
