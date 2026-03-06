@@ -15,13 +15,21 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
 .field{margin-bottom:20px}
 .date-row{display:flex;gap:10px}
 .date-col{flex:1;display:flex;flex-direction:column;align-items:center}
-.date-col select{width:100%;background:#0d1b2a;border:1.5px solid #0f3460;border-radius:10px;color:#f0ede8;font-size:16px;padding:14px 8px;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none;text-align:center;cursor:pointer}
+.date-col select{
+  width:100%;
+  background:#0d1b2a;
+  border:1.5px solid #0f3460;
+  border-radius:10px;
+  color:#f0ede8;
+  font-size:15px;
+  padding:12px 4px;
+  outline:none;
+  cursor:pointer;
+}
 .date-col select:focus{border-color:#e94560}
-.date-col select option{background:#0d1b2a;color:#f0ede8}
 .date-col-label{font-size:11px;color:#4a5568;margin-top:5px}
-.btn{width:100%;padding:15px;background:linear-gradient(135deg,#e94560,#c23152);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .15s}
-.btn:hover{opacity:.9;transform:translateY(-1px)}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,#e94560,#c23152);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s}
+.btn:disabled{opacity:.4;cursor:not-allowed}
 .err{color:#e94560;font-size:13px;margin-top:12px;display:none;text-align:center}
 .ok{display:none;text-align:center;padding:10px 0}
 .ok-icon{font-size:50px;margin-bottom:16px}
@@ -44,15 +52,33 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
       <label>Дата народження</label>
       <div class="date-row">
         <div class="date-col">
-          <select id="sel-day"></select>
+          <select id="sel-day">
+            <option value="">—</option>
+          </select>
           <span class="date-col-label">день</span>
         </div>
         <div class="date-col">
-          <select id="sel-month"></select>
+          <select id="sel-month">
+            <option value="">—</option>
+            <option value="01">Січень</option>
+            <option value="02">Лютий</option>
+            <option value="03">Березень</option>
+            <option value="04">Квітень</option>
+            <option value="05">Травень</option>
+            <option value="06">Червень</option>
+            <option value="07">Липень</option>
+            <option value="08">Серпень</option>
+            <option value="09">Вересень</option>
+            <option value="10">Жовтень</option>
+            <option value="11">Листопад</option>
+            <option value="12">Грудень</option>
+          </select>
           <span class="date-col-label">місяць</span>
         </div>
         <div class="date-col">
-          <select id="sel-year"></select>
+          <select id="sel-year">
+            <option value="">—</option>
+          </select>
           <span class="date-col-label">рік</span>
         </div>
       </div>
@@ -61,7 +87,7 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
     <button class="btn" id="btn" onclick="send()">
       <span id="bt">Зберегти дату →</span>
       <div class="spin" id="sp"></div>
-    </button>
+   </button>
     <div class="err" id="err"></div>
     <div class="hint">🔒 Дані зберігаються безпечно</div>
   </div>
@@ -73,15 +99,10 @@ label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
   </div>
 </div>
 <script>
-var monthNames=[
-  {v:'01',l:'Січень'},{v:'02',l:'Лютий'},{v:'03',l:'Березень'},
-  {v:'04',l:'Квітень'},{v:'05',l:'Травень'},{v:'06',l:'Червень'},
-  {v:'07',l:'Липень'},{v:'08',l:'Серпень'},{v:'09',l:'Вересень'},
-  {v:'10',l:'Жовтень'},{v:'11',l:'Листопад'},{v:'12',l:'Грудень'}
-];
 var mn={'01':'січня','02':'лютого','03':'березня','04':'квітня','05':'травня','06':'червня','07':'липня','08':'серпня','09':'вересня','10':'жовтня','11':'листопада','12':'грудня'};
-  var selDay=document.getElementById('sel-day');
-selDay.innerHTML='<option value="">—</option>';
+
+// Fill days
+var selDay=document.getElementById('sel-day');
 for(var d=1;d<=31;d++){
   var o=document.createElement('option');
   o.value=String(d).padStart(2,'0');
@@ -89,20 +110,13 @@ for(var d=1;d<=31;d++){
   selDay.appendChild(o);
 }
 
-var selMonth=document.getElementById('sel-month');
-selMonth.innerHTML='<option value="">—</option>';
-monthNames.forEach(function(m){
-  var o=document.createElement('option');
-  o.value=m.v;o.textContent=m.l;
-  selMonth.appendChild(o);
-});
-
+// Fill years
 var selYear=document.getElementById('sel-year');
-selYear.innerHTML='<option value="">—</option>';
 var curYear=new Date().getFullYear();
 for(var y=curYear-5;y>=1930;y--){
   var oy=document.createElement('option');
-  oy.value=String(y);oy.textContent=y;
+  oy.value=String(y);
+  oy.textContent=y;
   selYear.appendChild(oy);
 }
 
@@ -152,4 +166,4 @@ async function send(){
 }
 </script>
 </body>
-</html>
+</html>   
