@@ -13,10 +13,12 @@ h1{font-size:26px;font-weight:400;margin-bottom:8px}
 .sub{color:#8892b0;font-size:14px;margin-bottom:32px;line-height:1.5}
 label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8892b0;margin-bottom:8px}
 .field{margin-bottom:20px}
-input[type=text],input[type=date]{width:100%;background:#0d1b2a;border:1.5px solid #0f3460;border-radius:10px;color:#f0ede8;font-size:16px;padding:14px 16px;outline:none;transition:border-color .2s}
-input[type=date]{color-scheme:dark}
-input[type=text]:focus,input[type=date]:focus{border-color:#e94560}
-input[type=text]::placeholder{color:#4a5568}
+.date-row{display:flex;gap:10px}
+.date-col{flex:1;display:flex;flex-direction:column;align-items:center}
+.date-col select{width:100%;background:#0d1b2a;border:1.5px solid #0f3460;border-radius:10px;color:#f0ede8;font-size:16px;padding:14px 8px;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none;text-align:center;cursor:pointer}
+.date-col select:focus{border-color:#e94560}
+.date-col select option{background:#0d1b2a;color:#f0ede8}
+.date-col-label{font-size:11px;color:#4a5568;margin-top:5px}
 .btn{width:100%;padding:15px;background:linear-gradient(135deg,#e94560,#c23152);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .15s}
 .btn:hover{opacity:.9;transform:translateY(-1px)}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
@@ -39,19 +41,28 @@ input[type=text]::placeholder{color:#4a5568}
     <h1>Дата народження</h1>
     <p class="sub">Вкажіть вашу дату народження — отримаєте привітання в Telegram</p>
     <div class="field">
-      <label>Ваше імʼя</label>
-      <input type="text" id="nm" placeholder="Введіть імʼя">
-    </div>
-    <div class="field">
       <label>Дата народження</label>
-      <input type="date" id="dt" max="2010-12-31" min="1930-01-01">
+      <div class="date-row">
+        <div class="date-col">
+          <select id="sel-day"></select>
+          <span class="date-col-label">день</span>
+        </div>
+        <div class="date-col">
+          <select id="sel-month"></select>
+          <span class="date-col-label">місяць</span>
+        </div>
+        <div class="date-col">
+          <select id="sel-year"></select>
+          <span class="date-col-label">рік</span>
+        </div>
+      </div>
     </div>
     <div class="divider"></div>
     <button class="btn" id="btn" onclick="send()">
       <span id="bt">Зберегти дату →</span>
       <div class="spin" id="sp"></div>
     </button>
-    <div class="err" id="err">⚠ Заповніть усі поля</div>
+    <div class="err" id="err"></div>
     <div class="hint">🔒 Дані зберігаються безпечно</div>
   </div>
   <div class="ok" id="ok">
@@ -62,33 +73,81 @@ input[type=text]::placeholder{color:#4a5568}
   </div>
 </div>
 <script>
-function getChatId(){var p=new URLSearchParams(window.location.search);return p.get('chat_id')||p.get('user_id')||'';}
+var monthNames=[
+  {v:'01',l:'Січень'},{v:'02',l:'Лютий'},{v:'03',l:'Березень'},
+  {v:'04',l:'Квітень'},{v:'05',l:'Травень'},{v:'06',l:'Червень'},
+  {v:'07',l:'Липень'},{v:'08',l:'Серпень'},{v:'09',l:'Вересень'},
+  {v:'10',l:'Жовтень'},{v:'11',l:'Листопад'},{v:'12',l:'Грудень'}
+];
+var mn={'01':'січня','02':'лютого','03':'березня','04':'квітня','05':'травня','06':'червня','07':'липня','08':'серпня','09':'вересня','10':'жовтня','11':'листопада','12':'грудня'};
+  var selDay=document.getElementById('sel-day');
+selDay.innerHTML='<option value="">—</option>';
+for(var d=1;d<=31;d++){
+  var o=document.createElement('option');
+  o.value=String(d).padStart(2,'0');
+  o.textContent=d;
+  selDay.appendChild(o);
+}
+
+var selMonth=document.getElementById('sel-month');
+selMonth.innerHTML='<option value="">—</option>';
+monthNames.forEach(function(m){
+  var o=document.createElement('option');
+  o.value=m.v;o.textContent=m.l;
+  selMonth.appendChild(o);
+});
+
+var selYear=document.getElementById('sel-year');
+selYear.innerHTML='<option value="">—</option>';
+var curYear=new Date().getFullYear();
+for(var y=curYear-5;y>=1930;y--){
+  var oy=document.createElement('option');
+  oy.value=String(y);oy.textContent=y;
+  selYear.appendChild(oy);
+}
+
+function getChatId(){
+  var p=new URLSearchParams(window.location.search);
+  return p.get('chat_id')p.get('user_id')'';
+}
+
 async function send(){
-  var n=document.getElementById('nm').value.trim();
-  var dt=document.getElementById('dt').value;
+  var day=document.getElementById('sel-day').value;
+  var month=document.getElementById('sel-month').value;
+  var year=document.getElementById('sel-year').value;
   var e=document.getElementById('err');
-  if(!n||!dt){e.style.display='block';e.textContent='⚠ Заповніть усі поля';return;}
+  if(!day!month!year){
+    e.style.display='block';
+    e.textContent='⚠️ Оберіть день, місяць і рік';
+    return;
+  }
   e.style.display='none';
-  var parts=dt.split('-');
-  var year=parts[0],month=parts[1],day=parts[2];
   var birthday=day+'.'+month+'.'+year;
-  var mn={'01':'січня','02':'лютого','03':'березня','04':'квітня','05':'травня','06':'червня','07':'липня','08':'серпня','09':'вересня','10':'жовтня','11':'листопада','12':'грудня'};
   var btn=document.getElementById('btn'),bt=document.getElementById('bt'),sp=document.getElementById('sp');
   btn.disabled=true;bt.style.display='none';sp.style.display='block';
   try{
     await fetch('https://hook.eu1.make.com/j69tayh47d2lkkrv6aj2hvkaj0ws2gj1',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name:n,birthday:birthday,day:day,month:month,year:year,chat_id:getChatId(),timestamp:new Date().toISOString()})
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        birthday:birthday,
+        day:day,
+        month:month,
+        year:year,
+        chat_id:getChatId(),
+        timestamp:new Date().toISOString()
+      })
     });
     document.getElementById('form').style.display='none';
     document.getElementById('ok').style.display='block';
-    document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year+' — '+n;
-    if(window.Telegram && window.Telegram.WebApp){
-      setTimeout(function(){ window.Telegram.WebApp.close(); }, 2000);
+    document.getElementById('od').textContent=parseInt(day)+' '+mn[month]+' '+year;
+    if(window.Telegram&&window.Telegram.WebApp){
+      setTimeout(function(){window.Telegram.WebApp.close();},2000);
     }
   }catch(err){
     btn.disabled=false;bt.style.display='block';sp.style.display='none';
-    e.textContent='⚠ Помилка. Спробуйте ще раз.';e.style.display='block';
+    e.textContent='⚠️ Помилка. Спробуйте ще раз.';
+    e.style.display='block';
   }
 }
 </script>
